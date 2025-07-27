@@ -3,7 +3,7 @@ import whisper
 import os
 
 app = Flask(__name__)
-model = whisper.load_model("medium")  # İstersen "small", "medium", "large" seçebilirsin
+model = whisper.load_model("small")  # İstersen "small", "medium", "large" seçebilirsin
 
 @app.route("/transcribe", methods=["POST"])
 def transcribe():
