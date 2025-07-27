@@ -13,4 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Flask uygulamasını başlat
-CMD ["python", "app.py"]
+CMD ["python", "main.py"]
