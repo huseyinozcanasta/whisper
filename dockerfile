@@ -4,7 +4,7 @@ FROM python:3.10-slim
 RUN apt-get update && apt-get install -y ffmpeg
 
 # çalışma dizini oluştur
-WORKDIR /app
+WORKDIR /main
 
 # dosyaları kopyala
 COPY requirements.txt .
