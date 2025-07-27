@@ -1,15 +1,24 @@
-from fastapi import FastAPI, UploadFile, File
+from flask import Flask, request, jsonify
 import whisper
+import os
 
-app = FastAPI()
-model = whisper.load_model("base")
+app = Flask(__name__)
+model = whisper.load_model("medium")  # İstersen "small", "medium", "large" seçebilirsin
 
-@app.post("/transcribe")
-async def transcribe(file: UploadFile = File(...)):
-    audio = await file.read()
-    # Dosyayı diske kaydet
-    with open("temp_audio.mp3", "wb") as f:
-        f.write(audio)
-    # Transkription işlemi
-    result = model.transcribe("temp_audio.mp3")
-    return {"text": result["text"]}
+@app.route("/transcribe", methods=["POST"])
+def transcribe():
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio file uploaded"}), 400
+
+    audio = request.files["audio"]
+    path = "temp.wav"
+    audio.save(path)
+
+    result = model.transcribe(path, language="tr")
+    os.remove(path)
+
+    return jsonify(result)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
+
